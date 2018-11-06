@@ -117,11 +117,6 @@ def select_seeds(x,y,model):
 
 def get_attack_vec(ep):
     attack = ep*(np.random.randint(3,size=(28,28,1))-1)
-    #attack[attack<0.33] = 0
-    #attack[(attack>=0.33) & (attack < 0.66)] = 1
-    #attack[attack<=0.66] = -1
-    #attack = attack*ep
-    #attack.resize((28,28,1))
     return attack
 
 def select_seeds_by_class(x,y,model):
@@ -143,7 +138,7 @@ def select_seeds_by_class(x,y,model):
                 count[temp]+=1
                 x_seeds.append(x[i])
                 y_seeds.append(y[i])
-    return np.array(x_seeds),np.array(y_seeds)
+    return np.array(x_seeds[0:33]),np.array(y_seeds[0:33])
 
 
 
@@ -170,9 +165,10 @@ if __name__ == '__main__':
     for i in range(len(x_seeds)):
         print("seed: %d"%i)
         print(datetime.datetime.now())
-        for z in range(8):
+        for z in range(9):
             #ep = (1./255.)*(2**z)
             ep = 0.06+(z*0.01)
+			print(ep)
             for j in range(100000):
                 attack = get_attack_vec(ep)
                 
@@ -193,15 +189,19 @@ if __name__ == '__main__':
                     attack_vector.append(result1)
                     ad_vector.append(attack)
     
-    print(ad_x_index)
-    print(ad_ep)
+    
 
+	print(ad_x_index)
+    print(ad_ep)
+	
     np.save('x_seeds',x_seeds)
     np.save('y_seeds',y_seeds)
     np.save('ad_x_index',np.array(ad_x_index))
     np.save('ad_ep',np.array(ad_ep))
     np.save('attack_vector',np.array(attack_vector))
     np.save('ad_vector',np.array(ad_vector))
+	
+	
 
 
     ind = ad_x_index[0]
