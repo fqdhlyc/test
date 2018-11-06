@@ -138,7 +138,7 @@ def select_seeds_by_class(x,y,model):
                 count[temp]+=1
                 x_seeds.append(x[i])
                 y_seeds.append(y[i])
-    return np.array(x_seeds[0:33]),np.array(y_seeds[0:33])
+    return np.array(x_seeds[33:66]),np.array(y_seeds[33:66])
 
 
 
