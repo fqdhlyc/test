@@ -1,3 +1,4 @@
+import datetime
 from keras.datasets import mnist
 from keras.utils import np_utils
 from keras.models import Sequential
@@ -100,7 +101,8 @@ def select_seeds(x,y,model):
     y_seeds = []
     for i in range(20):
         r = os.urandom(16)
-        rand = int(r.encode('hex'),16)%10000
+        #rand = int(r.encode('hex'),16)%10000
+        rand = int.from_bytes(r,byteorder='little')
         if rand in randlist:
             continue
         else:
@@ -114,12 +116,12 @@ def select_seeds(x,y,model):
     return np.array(x_seeds),np.array(y_seeds)
 
 def get_attack_vec(ep):
-    attack = np.random.rand(28,28)
-    attack[attack<0.33] = 0
-    attack[(attack>=0.33) & (attack < 0.66)] = 1
-    attack[attack<=0.66] = -1
-    attack = attack*ep
-    attack.resize((28,28,1))
+    attack = ep*(np.random.randint(3,size=(28,28,1))-1)
+    #attack[attack<0.33] = 0
+    #attack[(attack>=0.33) & (attack < 0.66)] = 1
+    #attack[attack<=0.66] = -1
+    #attack = attack*ep
+    #attack.resize((28,28,1))
     return attack
 
 def select_seeds_by_class(x,y,model):
@@ -152,7 +154,8 @@ if __name__ == '__main__':
     chans.compile(loss='categorical_crossentropy',optimizer='sgd', metrics=['acc'])
     
     r = os.urandom(4)
-    rand = int(r.encode('hex'),16)
+    #rand = int(r.encode('hex'),16)
+    rand = int.from_bytes(r,byteorder='little')
     #x_seeds,y_seeds = select_seeds(X_test, Y_test,chans)
     x_seeds,y_seeds = select_seeds_by_class(X_test, Y_test,chans)
     print(len(x_seeds))
@@ -165,11 +168,12 @@ if __name__ == '__main__':
     attack_vector = []
     ad_vector=[]
     for i in range(len(x_seeds)):
-        #print("seed: %d"%i)
+        print("seed: %d"%i)
+        print(datetime.datetime.now())
         for z in range(8):
             #ep = (1./255.)*(2**z)
-            ep = 0.05+(z*0.01)
-            for j in range(1000000):
+            ep = 0.06+(z*0.01)
+            for j in range(100000):
                 attack = get_attack_vec(ep)
                 
                 result1 = x_seeds[i]+attack
