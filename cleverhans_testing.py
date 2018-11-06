@@ -168,7 +168,7 @@ if __name__ == '__main__':
         for z in range(9):
             #ep = (1./255.)*(2**z)
             ep = 0.06+(z*0.01)
-			print(ep)
+	    print(ep)
             for j in range(100000):
                 attack = get_attack_vec(ep)
                 
