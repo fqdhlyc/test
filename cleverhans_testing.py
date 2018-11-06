@@ -101,8 +101,8 @@ def select_seeds(x,y,model):
     y_seeds = []
     for i in range(20):
         r = os.urandom(16)
-        #rand = int(r.encode('hex'),16)%10000
-        rand = int.from_bytes(r,byteorder='little')
+        rand = int(r.encode('hex'),16)%10000
+        #rand = int.from_bytes(r,byteorder='little')
         if rand in randlist:
             continue
         else:
@@ -154,8 +154,8 @@ if __name__ == '__main__':
     chans.compile(loss='categorical_crossentropy',optimizer='sgd', metrics=['acc'])
     
     r = os.urandom(4)
-    #rand = int(r.encode('hex'),16)
-    rand = int.from_bytes(r,byteorder='little')
+    rand = int(r.encode('hex'),16)
+    #rand = int.from_bytes(r,byteorder='little')
     #x_seeds,y_seeds = select_seeds(X_test, Y_test,chans)
     x_seeds,y_seeds = select_seeds_by_class(X_test, Y_test,chans)
     print(len(x_seeds))
