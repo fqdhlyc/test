@@ -138,7 +138,7 @@ def select_seeds_by_class(x,y,model):
                 count[temp]+=1
                 x_seeds.append(x[i])
                 y_seeds.append(y[i])
-    return np.array(x_seeds[66:]),np.array(y_seeds[66:])
+    return np.array(x_seeds),np.array(y_seeds)
 
 
 
@@ -168,7 +168,7 @@ if __name__ == '__main__':
         for z in range(9):
             #ep = (1./255.)*(2**z)
             ep = 0.06+(z*0.01)
-	    print(ep)
+			print(ep)
             for j in range(100000):
                 attack = get_attack_vec(ep)
                 
@@ -190,9 +190,8 @@ if __name__ == '__main__':
                     ad_vector.append(attack)
     
     
-
 	print(ad_x_index)
-    print(ad_ep)
+	print(ad_ep)
 	
     np.save('x_seeds',x_seeds)
     np.save('y_seeds',y_seeds)
