@@ -101,8 +101,8 @@ def select_seeds(x,y,model):
     y_seeds = []
     for i in range(20):
         r = os.urandom(16)
-        #rand = int(r.encode('hex'),16)%10000
-        rand = int.from_bytes(r,byteorder='little')
+        rand = int(r.encode('hex'),16)%10000
+        #rand = int.from_bytes(r,byteorder='little')
         if rand in randlist:
             continue
         else:
@@ -173,17 +173,17 @@ if __name__ == '__main__':
     
     ad_vector=[]
     
-    test_vec= np.zeros((100000,28,28,1))
-    val_vec = np.zeros((100000,10))
+    test_vec= np.zeros((10000,28,28,1))
+    val_vec = np.zeros((10000,10))
     
     for i in range(len(x_seeds)):
         print("seed: %d"%i)
         print(datetime.datetime.now())
-        for z in range(9):
+        for z in range(16):
             #ep = (1./255.)*(2**z)
-            ep = 0.06+(z*0.01)
+            ep = 0.14+(z*0.01)
             print("ep: %f"%ep)
-            for j in range(100000):
+            for j in range(10000):
                 attack = get_attack_vec(ep)
                 
                 result1 = x_seeds[i]+attack
